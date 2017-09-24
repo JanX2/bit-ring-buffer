@@ -17,11 +17,11 @@
  * Bit sets
  */
 
-#define BITS_PER_BYTE	8
+#define JX_BITSET_BITS_PER_BYTE	8
 #define JX_BITSET_USE_INLINE_STORAGE 1
 
 #define JX_BITSET_USE_INLINE_STORAGE_SIZE (sizeof(size_t))
-#define JX_BITSET_USE_INLINE_STORAGE_COUNT (JX_BITSET_USE_INLINE_STORAGE_SIZE * BITS_PER_BYTE)
+#define JX_BITSET_USE_INLINE_STORAGE_COUNT (JX_BITSET_USE_INLINE_STORAGE_SIZE * JX_BITSET_BITS_PER_BYTE)
 
 struct jx_bitset {
 	uint8_t *bits;
@@ -49,12 +49,12 @@ jx_bitset_clear(struct jx_bitset *set);
 
 /* Extract the byte that contains a particular bit in an array. */
 #define jx_bitset_byte_for_bit(set, i) \
-	((set)->bits[(i) / BITS_PER_BYTE])
+	((set)->bits[(i) / JX_BITSET_BITS_PER_BYTE])
 
 /* Create a bit mask that extracts a particular bit from the byte that it lives
  * in. */
 #define jx_bitset_pos_mask_for_bit(i) \
-	(0b10000000 >> ((i) % BITS_PER_BYTE))
+	(0b10000000 >> ((i) % JX_BITSET_BITS_PER_BYTE))
 
 /* Create a bit mask that extracts everything except for a particular bit from
  * the byte that it lives in. */

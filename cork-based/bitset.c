@@ -22,9 +22,9 @@ static size_t
 bytes_needed(size_t bit_count)
 {
 	// We need one byte for every bit…
-	size_t bytes_needed = bit_count / BITS_PER_BYTE;
+	size_t bytes_needed = bit_count / JX_BITSET_BITS_PER_BYTE;
 	// Plus one extra for the leftovers that don’t fit into a whole byte.
-	bytes_needed += ((bit_count % BITS_PER_BYTE) > 0);
+	bytes_needed += ((bit_count % JX_BITSET_BITS_PER_BYTE) > 0);
 	
 	return bytes_needed;
 }
