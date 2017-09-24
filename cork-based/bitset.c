@@ -23,6 +23,25 @@
 	(set->bits == jx_bitset_uint8_pointer_for_inline_storage(set))
 #endif
 
+#define jx_bitset_generic_popcount(X) _Generic((X), \
+			unsigned int:		__builtin_popcount, \
+			unsigned long:		__builtin_popcountl, \
+			unsigned long long:	__builtin_popcountll, \
+			default:			__builtin_popcount \
+		)(X)
+
+// Adapted from
+// http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetTable
+_Static_assert(JX_BITSET_BITS_PER_BYTE == 8, "The lookup table is only valid for eight bits per byte.");
+static const uint8_t jx_bitset_count_of_bits_set_in_byte_table[256] =
+{
+#   define B2(n) n,     n+1,     n+1,     n+2
+#   define B4(n) B2(n), B2(n+1), B2(n+1), B2(n+2)
+#   define B6(n) B4(n), B4(n+1), B4(n+1), B4(n+2)
+	B6(0), B6(1), B6(1), B6(2)
+};
+
+
 static size_t
 bytes_needed(size_t bit_count)
 {
@@ -95,10 +114,39 @@ jx_bitset_clear(struct jx_bitset *set)
 	{
 		memset(set->bits, 0, set->byte_count);
 	}
+}
+
+int
+jx_bitset_popcount(struct jx_bitset *set)
+{
+#if JX_BITSET_USE_INLINE_STORAGE
+	if (jx_bitset_uses_inline_storage(set)) {
+		return jx_bitset_generic_popcount(set->bits_inline);
 	}
 	else
 #endif
 	{
-        memset(set->bits, 0, set->byte_count);
+		size_t unit_size = sizeof(size_t);
+		
+		size_t unit_count = set->byte_count / unit_size;
+		size_t unit_remainder = set->byte_count % unit_size;
+		
+		int popcount = 0;
+		size_t *units = (size_t *)set->bits;
+		
+		for (size_t i = 0; i < unit_count; i += 1) {
+			size_t unit = units[i];
+			popcount += jx_bitset_generic_popcount(unit);
+		}
+		
+		if (unit_remainder > 0) {
+			uint8_t *bits_remainder = (uint8_t *)&(units[unit_count]);
+			for (size_t i = 0; i < unit_remainder; i += 1) {
+				uint8_t byte = bits_remainder[i];
+				popcount += jx_bitset_count_of_bits_set_in_byte_table[byte];
+			}
+		}
+		
+		return popcount;
 	}
 }

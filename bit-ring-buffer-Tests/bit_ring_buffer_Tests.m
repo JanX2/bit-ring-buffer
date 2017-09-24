@@ -39,11 +39,15 @@ test_bitset_with_bit_count(id self, struct jx_bitset *set) {
 	for (size_t  i = 0; i < bit_count; i++) {
 		jx_bitset_set(set, i, true);
 		XCTAssertTrue(jx_bitset_get(set, i), "Unexpected value for bit %zu", i);
+		
+		XCTAssertEqual(jx_bitset_popcount(set), (i + 1));
 	}
 	
 	for (size_t  i = 0; i < bit_count; i++) {
 		jx_bitset_set(set, i, false);
 		XCTAssertFalse(jx_bitset_get(set, i), "Unexpected value for bit %zu", i);
+		
+		XCTAssertEqual(jx_bitset_popcount(set), (bit_count - i - 1));
 	}
 }
 

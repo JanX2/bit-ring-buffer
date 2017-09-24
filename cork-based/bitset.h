@@ -47,6 +47,10 @@ jx_bitset_free(struct jx_bitset *set);
 void
 jx_bitset_clear(struct jx_bitset *set);
 
+/* Return the number of 1-bits in the set. */
+int
+jx_bitset_popcount(struct jx_bitset *set);
+
 /* Extract the byte that contains a particular bit in an array. */
 #define jx_bitset_byte_for_bit(set, i) \
 	((set)->bits[(i) / JX_BITSET_BITS_PER_BYTE])
