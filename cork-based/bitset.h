@@ -12,9 +12,6 @@
 
 #include <limits.h>
 
-//#include <libcork/core/api.h>
-//#include <libcork/core/types.h>
-
 
 /*-----------------------------------------------------------------------
  * Bit sets
