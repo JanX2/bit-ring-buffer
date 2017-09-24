@@ -69,5 +69,8 @@ jx_bitset_clear(struct jx_bitset *set);
 	 (jx_bitset_byte_for_bit(set, i) & jx_bitset_neg_mask_for_bit(i)) \
 	 | ((val)? jx_bitset_pos_mask_for_bit(i): 0))
 
+/* Return the count of bits in the set. */
+#define jx_bitset_get_bit_count(set) \
+	((set)->bit_count)
 
 #endif /* LIBJX_DS_BITS_H */
