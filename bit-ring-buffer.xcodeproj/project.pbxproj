@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3DD6F4261F77ABD400B55CF6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DD6F4251F77ABD400B55CF6 /* main.m */; };
 		3DD6F4331F77AC0200B55CF6 /* bit_ring_buffer_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DD6F4321F77AC0200B55CF6 /* bit_ring_buffer_Tests.m */; };
+		3DD6F43F1F77ACF600B55CF6 /* bitset.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DD6F4391F77ACF600B55CF6 /* bitset.c */; };
+		3DD6F4401F77ACF600B55CF6 /* bitset.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DD6F4391F77ACF600B55CF6 /* bitset.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +31,8 @@
 		3DD6F4301F77AC0200B55CF6 /* bit-ring-buffer-Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "bit-ring-buffer-Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DD6F4321F77AC0200B55CF6 /* bit_ring_buffer_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bit_ring_buffer_Tests.m; sourceTree = "<group>"; };
 		3DD6F4341F77AC0200B55CF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3DD6F4391F77ACF600B55CF6 /* bitset.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bitset.c; sourceTree = "<group>"; };
+		3DD6F43A1F77ACF600B55CF6 /* bitset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitset.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +56,7 @@
 		3DD6F4191F77ABD400B55CF6 = {
 			isa = PBXGroup;
 			children = (
+				3DD6F4381F77ACF600B55CF6 /* cork-based */,
 				3DD6F4241F77ABD400B55CF6 /* bit-ring-buffer */,
 				3DD6F4311F77AC0200B55CF6 /* bit-ring-buffer-Tests */,
 				3DD6F4231F77ABD400B55CF6 /* Products */,
@@ -82,6 +87,15 @@
 				3DD6F4341F77AC0200B55CF6 /* Info.plist */,
 			);
 			path = "bit-ring-buffer-Tests";
+			sourceTree = "<group>";
+		};
+		3DD6F4381F77ACF600B55CF6 /* cork-based */ = {
+			isa = PBXGroup;
+			children = (
+				3DD6F43A1F77ACF600B55CF6 /* bitset.h */,
+				3DD6F4391F77ACF600B55CF6 /* bitset.c */,
+			);
+			path = "cork-based";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,6 +185,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DD6F43F1F77ACF600B55CF6 /* bitset.c in Sources */,
 				3DD6F4261F77ABD400B55CF6 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -179,6 +194,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DD6F4401F77ACF600B55CF6 /* bitset.c in Sources */,
 				3DD6F4331F77AC0200B55CF6 /* bit_ring_buffer_Tests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -223,7 +239,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -261,7 +277,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
