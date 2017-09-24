@@ -33,10 +33,8 @@
 #endif
 
 static void
-test_bitset_of_size(id self, size_t bit_count)
-{
+test_bitset_with_bit_count(id self, struct jx_bitset *set, size_t bit_count) {
 	size_t  i;
-	struct jx_bitset  *set = jx_bitset_new(bit_count);
 	
 	for (i = 0; i < bit_count; i++) {
 		jx_bitset_set(set, i, true);
@@ -47,10 +45,36 @@ test_bitset_of_size(id self, size_t bit_count)
 		jx_bitset_set(set, i, false);
 		XCTAssertFalse(jx_bitset_get(set, i), "Unexpected value for bit %zu", i);
 	}
+}
+
+static void
+test_stack_bitset_of_size(id self, size_t bit_count)
+{
+	struct jx_bitset set;
+	jx_bitset_init(&set, bit_count);
+	
+	test_bitset_with_bit_count(self, &set, bit_count);
+	
+	jx_bitset_deinit(&set);
+}
+
+static void
+test_heap_bitset_of_size(id self, size_t bit_count)
+{
+	size_t  i;
+	struct jx_bitset *set = jx_bitset_new(bit_count);
+	
+	test_bitset_with_bit_count(self, set, bit_count);
 	
 	jx_bitset_free(set);
 }
 
+static void
+test_bitset_of_size(id self, size_t bit_count)
+{
+	test_stack_bitset_of_size(self, bit_count);
+	test_heap_bitset_of_size(self, bit_count);
+}
 
 - (void)testBitset
 {
