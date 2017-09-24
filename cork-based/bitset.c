@@ -18,6 +18,11 @@
     ((uint8_t *)&(set->bits_inline))
 #endif
 
+#if JX_BITSET_USE_INLINE_STORAGE
+#define jx_bitset_uses_inline_storage(set) \
+	(set->bits == jx_bitset_uint8_pointer_for_inline_storage(set))
+#endif
+
 static size_t
 bytes_needed(size_t bit_count)
 {
@@ -65,7 +70,7 @@ void
 jx_bitset_deinit(struct jx_bitset *set)
 {
 #if JX_BITSET_USE_INLINE_STORAGE
-    if (set->bits != jx_bitset_uint8_pointer_for_inline_storage(set))
+	if (!jx_bitset_uses_inline_storage(set))
 #endif
     {
         free(set->bits);
