@@ -15,5 +15,5 @@ int main(int argc, const char * argv[]) {
 	    NSLog(@"Hello, World!");
 	}
 	
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }

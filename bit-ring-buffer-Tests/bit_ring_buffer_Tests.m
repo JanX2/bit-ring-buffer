@@ -21,14 +21,14 @@
 #if 0
 - (void)setUp
 {
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+	[super setUp];
+	// Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
 - (void)tearDown
 {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
+	// Put teardown code here. This method is called after the invocation of each test method in the class.
+	[super tearDown];
 }
 #endif
 
@@ -78,33 +78,33 @@ test_bitset_of_size(id self, size_t bit_count)
 
 - (void)testBitset
 {
-    test_bitset_of_size(self, 1);
-    test_bitset_of_size(self, 2);
-    test_bitset_of_size(self, 3);
-    test_bitset_of_size(self, 4);
-    test_bitset_of_size(self, 5);
-    test_bitset_of_size(self, 6);
-    test_bitset_of_size(self, 7);
-    test_bitset_of_size(self, 8);
-    test_bitset_of_size(self, 9);
-    test_bitset_of_size(self, 10);
-    test_bitset_of_size(self, 11);
-    test_bitset_of_size(self, 12);
-    test_bitset_of_size(self, 13);
-    test_bitset_of_size(self, 14);
-    test_bitset_of_size(self, 15);
-    test_bitset_of_size(self, 16);
-    test_bitset_of_size(self, 65535);
-    test_bitset_of_size(self, 65536);
-    test_bitset_of_size(self, 65537);
+	test_bitset_of_size(self, 1);
+	test_bitset_of_size(self, 2);
+	test_bitset_of_size(self, 3);
+	test_bitset_of_size(self, 4);
+	test_bitset_of_size(self, 5);
+	test_bitset_of_size(self, 6);
+	test_bitset_of_size(self, 7);
+	test_bitset_of_size(self, 8);
+	test_bitset_of_size(self, 9);
+	test_bitset_of_size(self, 10);
+	test_bitset_of_size(self, 11);
+	test_bitset_of_size(self, 12);
+	test_bitset_of_size(self, 13);
+	test_bitset_of_size(self, 14);
+	test_bitset_of_size(self, 15);
+	test_bitset_of_size(self, 16);
+	test_bitset_of_size(self, 65535);
+	test_bitset_of_size(self, 65536);
+	test_bitset_of_size(self, 65537);
 }
 
 #if 0
 - (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
+	// This is an example of a performance test case.
+	[self measureBlock:^{
         // Put the code you want to measure the time of here.
-    }];
+	}];
 }
 #endif
 
