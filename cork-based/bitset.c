@@ -87,5 +87,13 @@ jx_bitset_free(struct jx_bitset *set)
 void
 jx_bitset_clear(struct jx_bitset *set)
 {
-	memset(set->bits, 0, set->byte_count);
+#if JX_BITSET_USE_INLINE_STORAGE
+    if (jx_bitset_uses_inline_storage(set)) {
+        set->bits_inline = 0;
+    }
+    else
+#endif
+    {
+        memset(set->bits, 0, set->byte_count);
+    }
 }
