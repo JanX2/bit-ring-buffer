@@ -13,6 +13,11 @@
 #include "bitset.h"
 
 
+#if JX_BITSET_USE_INLINE_STORAGE
+#define jx_bitset_uint8_pointer_for_inline_storage(set) \
+    ((uint8_t *)&(set->bits_inline))
+#endif
+
 static size_t
 bytes_needed(size_t bit_count)
 {
@@ -29,8 +34,20 @@ jx_bitset_init(struct jx_bitset *set, size_t bit_count)
 {
 	set->bit_count = bit_count;
 	set->byte_count = bytes_needed(bit_count);
-	set->bits = calloc(set->byte_count, sizeof(uint8_t));
-	
+    
+#if JX_BITSET_USE_INLINE_STORAGE
+    if (bit_count > JX_BITSET_USE_INLINE_STORAGE_COUNT)
+#endif
+    {
+        set->bits = calloc(set->byte_count, sizeof(uint8_t));
+        
+    }
+#if JX_BITSET_USE_INLINE_STORAGE
+    else {
+        set->bits = jx_bitset_uint8_pointer_for_inline_storage(set);
+    }
+#endif
+
 	jx_bitset_clear(set);
 }
 
@@ -47,7 +64,12 @@ jx_bitset_new(size_t bit_count)
 void
 jx_bitset_deinit(struct jx_bitset *set)
 {
-	free(set->bits);
+#if JX_BITSET_USE_INLINE_STORAGE
+    if (set->bits != jx_bitset_uint8_pointer_for_inline_storage(set))
+#endif
+    {
+        free(set->bits);
+    }
 }
 
 void

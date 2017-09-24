@@ -18,9 +18,16 @@
  */
 
 #define BITS_PER_BYTE	8
+#define JX_BITSET_USE_INLINE_STORAGE 1
+
+#define JX_BITSET_USE_INLINE_STORAGE_SIZE (sizeof(size_t))
+#define JX_BITSET_USE_INLINE_STORAGE_COUNT (JX_BITSET_USE_INLINE_STORAGE_SIZE * BITS_PER_BYTE)
 
 struct jx_bitset {
 	uint8_t *bits;
+#if JX_BITSET_USE_INLINE_STORAGE
+    size_t  bits_inline;
+#endif
 	size_t  bit_count;
 	size_t  byte_count;
 };
