@@ -62,6 +62,7 @@
 				3DD6F4231F77ABD400B55CF6 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		3DD6F4231F77ABD400B55CF6 /* Products */ = {
 			isa = PBXGroup;

@@ -34,8 +34,8 @@
 
 static void
 test_bitset_with_bit_count(id self, struct jx_bitset *set) {
-    size_t bit_count = jx_bitset_get_bit_count(set);
-    
+	size_t bit_count = jx_bitset_get_bit_count(set);
+	
 	for (size_t  i = 0; i < bit_count; i++) {
 		jx_bitset_set(set, i, true);
 		XCTAssertTrue(jx_bitset_get(set, i), "Unexpected value for bit %zu", i);
@@ -102,7 +102,7 @@ test_bitset_of_size(id self, size_t bit_count)
 - (void)testPerformanceExample {
 	// This is an example of a performance test case.
 	[self measureBlock:^{
-        // Put the code you want to measure the time of here.
+		// Put the code you want to measure the time of here.
 	}];
 }
 #endif

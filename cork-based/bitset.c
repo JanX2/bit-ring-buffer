@@ -15,7 +15,7 @@
 
 #if JX_BITSET_USE_INLINE_STORAGE
 #define jx_bitset_uint8_pointer_for_inline_storage(set) \
-    ((uint8_t *)&(set->bits_inline))
+	((uint8_t *)&(set->bits_inline))
 #endif
 
 #if JX_BITSET_USE_INLINE_STORAGE
@@ -39,18 +39,18 @@ jx_bitset_init(struct jx_bitset *set, size_t bit_count)
 {
 	set->bit_count = bit_count;
 	set->byte_count = bytes_needed(bit_count);
-    
+	
 #if JX_BITSET_USE_INLINE_STORAGE
-    if (bit_count > JX_BITSET_USE_INLINE_STORAGE_COUNT)
+	if (bit_count > JX_BITSET_USE_INLINE_STORAGE_COUNT)
 #endif
-    {
-        set->bits = calloc(set->byte_count, sizeof(uint8_t));
-        
-    }
+	{
+		set->bits = calloc(set->byte_count, sizeof(uint8_t));
+		
+	}
 #if JX_BITSET_USE_INLINE_STORAGE
-    else {
-        set->bits = jx_bitset_uint8_pointer_for_inline_storage(set);
-    }
+	else {
+		set->bits = jx_bitset_uint8_pointer_for_inline_storage(set);
+	}
 #endif
 
 	jx_bitset_clear(set);
@@ -72,9 +72,9 @@ jx_bitset_deinit(struct jx_bitset *set)
 #if JX_BITSET_USE_INLINE_STORAGE
 	if (!jx_bitset_uses_inline_storage(set))
 #endif
-    {
-        free(set->bits);
-    }
+	{
+		free(set->bits);
+	}
 }
 
 void
@@ -88,12 +88,18 @@ void
 jx_bitset_clear(struct jx_bitset *set)
 {
 #if JX_BITSET_USE_INLINE_STORAGE
-    if (jx_bitset_uses_inline_storage(set)) {
-        set->bits_inline = 0;
-    }
-    else
+	if (jx_bitset_uses_inline_storage(set)) {
+		set->bits_inline = 0;
+	}
+	else
 #endif
-    {
+	{
+		memset(set->bits, 0, set->byte_count);
+	}
+	}
+	else
+#endif
+	{
         memset(set->bits, 0, set->byte_count);
-    }
+	}
 }

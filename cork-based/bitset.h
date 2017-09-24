@@ -26,7 +26,7 @@
 struct jx_bitset {
 	uint8_t *bits;
 #if JX_BITSET_USE_INLINE_STORAGE
-    size_t  bits_inline;
+	size_t  bits_inline;
 #endif
 	size_t  bit_count;
 	size_t  byte_count;
