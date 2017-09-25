@@ -28,7 +28,7 @@
 			unsigned int:		__builtin_popcount, \
 			unsigned long:		__builtin_popcountl, \
 			unsigned long long:	__builtin_popcountll, \
-			default:			__builtin_popcount \
+			default:			__builtin_popcountll \
 		)(X)
 
 // NOTE: For alternative ways to calculate popcount, see:
