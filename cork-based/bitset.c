@@ -31,6 +31,9 @@
 			default:			__builtin_popcount \
 		)(X)
 
+// NOTE: For alternative ways to calculate popcount, see:
+// http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetTable
+// https://en.wikipedia.org/wiki/Hamming_weight
 
 static size_t
 bytes_needed(size_t bit_count)
