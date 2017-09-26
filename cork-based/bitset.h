@@ -24,33 +24,33 @@
 #define JX_BITSET_INLINE_STORAGE_SIZE (sizeof(size_t))
 #define JX_BITSET_INLINE_STORAGE_COUNT (JX_BITSET_INLINE_STORAGE_SIZE * JX_BITSET_BITS_PER_BYTE)
 
-struct jx_bitset {
+typedef struct jx_bitset {
 	uint8_t *bits;
 #if JX_BITSET_USE_INLINE_STORAGE
 	size_t  bits_inline;
 #endif
 	size_t  bit_count;
 	size_t  byte_count;
-};
+} jx_bitset;
 
 void
-jx_bitset_init(struct jx_bitset *set, size_t bit_count);
+jx_bitset_init(jx_bitset *set, size_t bit_count);
 
 void
-jx_bitset_deinit(struct jx_bitset *set);
+jx_bitset_deinit(jx_bitset *set);
 
-struct jx_bitset *
+jx_bitset *
 jx_bitset_new(size_t bit_count);
 
 void
-jx_bitset_free(struct jx_bitset *set);
+jx_bitset_free(jx_bitset *set);
 
 void
-jx_bitset_clear(struct jx_bitset *set);
+jx_bitset_clear(jx_bitset *set);
 
 /* Return the number of 1-bits in the set. */
 int
-jx_bitset_popcount(struct jx_bitset *set);
+jx_bitset_popcount(jx_bitset *set);
 
 /* Extract the byte that contains a particular bit in an array.
  * Bytes are stored in big-endian order with the lowest address

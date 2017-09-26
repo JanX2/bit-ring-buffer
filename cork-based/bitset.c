@@ -47,7 +47,7 @@ bytes_needed(size_t bit_count)
 }
 
 void
-jx_bitset_init(struct jx_bitset *set, size_t bit_count)
+jx_bitset_init(jx_bitset *set, size_t bit_count)
 {
 	set->bit_count = bit_count;
 	set->byte_count = bytes_needed(bit_count);
@@ -68,10 +68,10 @@ jx_bitset_init(struct jx_bitset *set, size_t bit_count)
 	jx_bitset_clear(set);
 }
 
-struct jx_bitset *
+jx_bitset *
 jx_bitset_new(size_t bit_count)
 {
-	struct jx_bitset *set = malloc(sizeof(struct jx_bitset));
+	jx_bitset *set = malloc(sizeof(jx_bitset));
 	
 	jx_bitset_init(set, bit_count);
 	
@@ -79,7 +79,7 @@ jx_bitset_new(size_t bit_count)
 }
 
 void
-jx_bitset_deinit(struct jx_bitset *set)
+jx_bitset_deinit(jx_bitset *set)
 {
 #if JX_BITSET_USE_INLINE_STORAGE
 	if (!jx_bitset_uses_inline_storage(set))
@@ -90,14 +90,14 @@ jx_bitset_deinit(struct jx_bitset *set)
 }
 
 void
-jx_bitset_free(struct jx_bitset *set)
+jx_bitset_free(jx_bitset *set)
 {
 	jx_bitset_deinit(set);
 	free(set);
 }
 
 void
-jx_bitset_clear(struct jx_bitset *set)
+jx_bitset_clear(jx_bitset *set)
 {
 #if JX_BITSET_USE_INLINE_STORAGE
 	set->bits_inline = 0;
@@ -110,7 +110,7 @@ jx_bitset_clear(struct jx_bitset *set)
 }
 
 int
-jx_bitset_popcount(struct jx_bitset *set)
+jx_bitset_popcount(jx_bitset *set)
 {
 #if JX_BITSET_USE_INLINE_STORAGE
 	if (jx_bitset_uses_inline_storage(set)) {

@@ -33,7 +33,7 @@
 #endif
 
 static void
-test_bitset_with_bit_count(id self, struct jx_bitset *set) {
+test_bitset_with_bit_count(id self, jx_bitset *set) {
 	size_t bit_count = jx_bitset_get_bit_count(set);
 	
 	for (size_t i = 0; i < bit_count; i += 1) {
@@ -54,7 +54,7 @@ test_bitset_with_bit_count(id self, struct jx_bitset *set) {
 static void
 test_stack_bitset_of_size(id self, size_t bit_count)
 {
-	struct jx_bitset set;
+	jx_bitset set;
 	jx_bitset_init(&set, bit_count);
 	
 	test_bitset_with_bit_count(self, &set);
@@ -65,7 +65,7 @@ test_stack_bitset_of_size(id self, size_t bit_count)
 static void
 test_heap_bitset_of_size(id self, size_t bit_count)
 {
-	struct jx_bitset *set = jx_bitset_new(bit_count);
+	jx_bitset *set = jx_bitset_new(bit_count);
 	
 	test_bitset_with_bit_count(self, set);
 	
