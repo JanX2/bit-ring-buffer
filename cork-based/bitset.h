@@ -96,14 +96,14 @@ jx_bitset_popcount(jx_bitset *set);
 /* Return whether a particular bit is set in a byte array.
  * Bits are numbered from 0 for the least significant bit up to `bit_count`. */
 #define jx_bitset_get(set, i) \
-	((jx_bitset_byte_for_bit(set, i) & jx_bitset_pos_mask_for_bit(i)) != 0)
+	((jx_bitset_byte_for_bit(set, i) & jx_bitset_pos_mask_for_bit(i)) != false)
 
 /* Set (or unset) a particular bit in a byte array.  
  * Bits are numbered from 0 for the least significant bit up to `bit_count`. */
 #define jx_bitset_set(set, i, val) \
 	(jx_bitset_byte_for_bit(set, i) = \
 	 (jx_bitset_byte_for_bit(set, i) & jx_bitset_neg_mask_for_bit(i)) \
-	 | ((val)? jx_bitset_pos_mask_for_bit(i): 0))
+	 | ((val)? jx_bitset_pos_mask_for_bit(i): false))
 
 /* Return the number of bits for which storage is reserved in the set. */
 #define jx_bitset_get_bit_count(set) \
