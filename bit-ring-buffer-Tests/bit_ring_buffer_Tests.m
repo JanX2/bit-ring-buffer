@@ -105,6 +105,10 @@ test_bitset_of_size(id self, size_t bit_count)
 	test_bitset_of_size(self, 14);
 	test_bitset_of_size(self, 15);
 	test_bitset_of_size(self, 16);
+	test_bitset_of_size(self, 31);
+	test_bitset_of_size(self, 32);
+	test_bitset_of_size(self, 63);
+	test_bitset_of_size(self, 64);
 	test_bitset_of_size(self, 65535);
 	test_bitset_of_size(self, 65536);
 	test_bitset_of_size(self, 65537);
