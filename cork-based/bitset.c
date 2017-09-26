@@ -53,7 +53,7 @@ jx_bitset_init(struct jx_bitset *set, size_t bit_count)
 	set->byte_count = bytes_needed(bit_count);
 	
 #if JX_BITSET_USE_INLINE_STORAGE
-	if (bit_count > JX_BITSET_USE_INLINE_STORAGE_COUNT)
+	if (bit_count > JX_BITSET_INLINE_STORAGE_COUNT)
 #endif
 	{
 		set->bits = calloc(set->byte_count, sizeof(uint8_t));
