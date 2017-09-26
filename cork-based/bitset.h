@@ -56,6 +56,10 @@ jx_bitset_popcount(jx_bitset *set);
 #define jx_bitset_byte_offset_in_array(i) \
 	((i) / JX_BITSET_BITS_PER_BYTE)
 
+/* Calculate the offset for a particular bit within a byte. */
+#define jx_bitset_bit_offset_in_byte(i) \
+	((i) % JX_BITSET_BITS_PER_BYTE)
+
 /* Extract the byte that contains a particular bit in an array.
  * Bytes are stored in big-endian order with the lowest address
  * storing the lowest-numbered bits. */
@@ -73,7 +77,7 @@ jx_bitset_popcount(jx_bitset *set);
 /* Create a bit mask that extracts a particular bit from the byte that it lives
  * in. */
 #define jx_bitset_pos_mask_for_bit(i) \
-	(JX_BITSET_SINGLE_BIT_MASK JX_BITSET_SINGLE_BIT_SHIFT ((i) % JX_BITSET_BITS_PER_BYTE))
+	(JX_BITSET_SINGLE_BIT_MASK JX_BITSET_SINGLE_BIT_SHIFT jx_bitset_bit_offset_in_byte(i))
 
 /* Create a bit mask that extracts everything except for a particular bit from
  * the byte that it lives in. */
