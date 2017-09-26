@@ -55,7 +55,16 @@ jx_bitset_set_all_to_true(jx_bitset *set);
 
 void
 jx_bitset_set_all(jx_bitset *set, bool val);
+
+void
+jx_bitset_shift_all_bits_forward(jx_bitset *set);
 #endif
+
+/* Shift every bit to the next index. 
+ * The first bit (index 0) is set to `false`.
+ * The last bit’s value is lost. */
+void
+jx_bitset_shift_all_bits_forward_slowest(jx_bitset *set);
 
 /* Return the number of 1-bits in the set. */
 int

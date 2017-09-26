@@ -194,7 +194,119 @@ jx_bitset_set_all(jx_bitset *set, bool val)
 		jx_bitset_clear(set);
 	}
 }
+
+static void
+shift_bits_with_count(uint8_t *start_byte_p, uint8_t *last_byte_p, uint8_t prev_overflow, const size_t bit_count)
+{
+	const size_t byte_count = (last_byte_p + 1) - start_byte_p;
+	
+	const size_t last_bit_in_byte = JX_BITSET_BITS_PER_BYTE - 1;
+	const uint8_t byte_overflow_mask = jx_bitset_pos_mask_for_bit(last_bit_in_byte);
+	
+	uint8_t byte_overflow = prev_overflow;
+	
+	for (size_t i = 0; i < byte_count; i += 1) {
+		uint8_t *byte_p = &(start_byte_p[i]);
+		uint8_t byte = *byte_p;
+		*byte_p <<= 1;
+		*byte_p |= byte_overflow;
+		
+		byte_overflow = (byte & byte_overflow_mask) >> last_bit_in_byte;
+	}
+	
+	if (bit_count % JX_BITSET_BITS_PER_BYTE > 0) {
+		const uint8_t last_byte_mask = last_byte_mask_for_bit_count(bit_count);
+		*last_byte_p &= last_byte_mask;
+	}
+}
+
+void
+jx_bitset_shift_all_bits_forward_using_bytes(jx_bitset *set)
+{
+	const size_t bit_count = jx_bitset_get_bit_count(set);
+	
+	uint8_t *start_byte_p = set->bits;
+	uint8_t *last_byte_p = &(set->bits[set->byte_count - 1]);
+	
+	shift_bits_with_count(start_byte_p, last_byte_p, 0b0, bit_count);
+}
+
+void
+jx_bitset_shift_all_bits_forward_using_units(jx_bitset *set)
+{
+	const size_t bit_count = jx_bitset_get_bit_count(set);
+	
+	const size_t unit_size = sizeof(size_t);
+	const size_t bits_per_unit = unit_size * JX_BITSET_BITS_PER_BYTE;
+	const size_t last_bit_in_unit = bits_per_unit - 1;
+	
+	const size_t unit_count = set->byte_count / unit_size;
+	const size_t unit_remainder = set->byte_count % unit_size;
+	
+	const size_t unit_overflow_mask =
+	(size_t)0b1 JX_BITSET_SINGLE_BIT_SHIFT last_bit_in_unit;
+	
+	size_t unit_overflow = 0b0;
+	size_t *units = (size_t *)set->bits;
+	
+	for (size_t i = 0; i < unit_count; i += 1) {
+		size_t *unit_p = &(units[i]);
+		size_t unit = *unit_p;
+		*unit_p <<= 1;
+		*unit_p |= unit_overflow;
+		
+		unit_overflow = (unit & unit_overflow_mask) >> last_bit_in_unit;
+	}
+	
+	if (unit_remainder > 0) {
+		uint8_t *start_byte_p = (uint8_t *)&(units[unit_count]);
+		uint8_t *last_byte_p = &(set->bits[set->byte_count - 1]);
+		
+		shift_bits_with_count(start_byte_p, last_byte_p, (uint8_t)unit_overflow, bit_count);
+	}
+	else if (bit_count % bits_per_unit > 0) {
+		size_t *last_unit = &(units[unit_count - 1]);
+		const size_t last_unit_mask = bits_inline_mask_for_bit_count(bit_count);
+		*last_unit &= last_unit_mask;
+	}
+}
+
+void
+jx_bitset_shift_all_bits_forward(jx_bitset *set)
+{
+#if JX_BITSET_USE_INLINE_STORAGE
+	if (jx_bitset_uses_inline_storage(set)) {
+		set->bits_inline <<= 1;
+		
+		const size_t bit_count = jx_bitset_get_bit_count(set);
+		if (bit_count != JX_BITSET_INLINE_STORAGE_SIZE * JX_BITSET_BITS_PER_BYTE) {
+			const size_t bits_inline_mask = bits_inline_mask_for_bit_count(set->bit_count);
+			set->bits_inline &= bits_inline_mask;
+		}
+	}
+	else
 #endif
+	{
+		jx_bitset_shift_all_bits_forward_using_units(set);
+	}
+}
+
+#endif
+
+void
+jx_bitset_shift_all_bits_forward_slowest(jx_bitset *set)
+{
+	const size_t bit_count = jx_bitset_get_bit_count(set);
+	
+	bool previous_bit = false;
+	
+	for (size_t i = 0; i < bit_count; i += 1) {
+		const bool overflow_bit = jx_bitset_get(set, i);
+		jx_bitset_set(set, i, previous_bit);
+		
+		previous_bit = overflow_bit;
+	}
+}
 
 int
 jx_bitset_popcount(jx_bitset *set)
