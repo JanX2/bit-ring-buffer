@@ -70,7 +70,7 @@ jx_bitset_popcount(jx_bitset *set);
 	((i) % JX_BITSET_BITS_PER_BYTE)
 
 /* Extract the byte that contains a particular bit in an array.
- * Bytes are stored in big-endian order with the lowest address
+ * Bytes are stored in big-endian order with the lowest byte address
  * storing the lowest-numbered bits. */
 #define jx_bitset_byte_for_bit(set, i) \
 	((set)->bits[jx_bitset_byte_offset_in_array(i)])
