@@ -60,12 +60,36 @@ test_bitset_with_bit_count(id self, jx_bitset *set) {
 }
 
 static void
+test_bitset_with_bit_count_alternating_values(id self, jx_bitset *set) {
+	size_t bit_count = jx_bitset_get_bit_count(set);
+	
+	for (size_t i = 0; i < bit_count; i += 2) {
+		jx_bitset_set(set, i, true);
+		XCTAssertTrue(jx_bitset_get(set, i), "Unexpected value for bit %zu", i);
+		
+		XCTAssertEqual(jx_bitset_popcount(set), (i/2 + 1));
+	}
+	
+	const size_t max_alternating_popcount = bit_count/2 + bit_count % 2;
+
+	for (size_t i = 0; i < bit_count; i += 2) {
+		jx_bitset_set(set, i, false);
+		XCTAssertFalse(jx_bitset_get(set, i), "Unexpected value for bit %zu", i);
+		
+		XCTAssertEqual(jx_bitset_popcount(set), (max_alternating_popcount - i/2 - 1),
+					   "Unexpected number of bits set to true for bit count %zu.", bit_count);
+	}
+}
+
+static void
 test_stack_bitset_of_size(id self, size_t bit_count)
 {
 	jx_bitset set;
 	jx_bitset_init(&set, bit_count);
 	
 	test_bitset_with_bit_count(self, &set);
+	jx_bitset_clear(&set);
+	test_bitset_with_bit_count_alternating_values(self, &set);
 	
 	jx_bitset_deinit(&set);
 }
@@ -76,7 +100,9 @@ test_heap_bitset_of_size(id self, size_t bit_count)
 	jx_bitset *set = jx_bitset_new(bit_count);
 	
 	test_bitset_with_bit_count(self, set);
-	
+	jx_bitset_clear(set);
+	test_bitset_with_bit_count_alternating_values(self, set);
+
 	jx_bitset_free(set);
 }
 
