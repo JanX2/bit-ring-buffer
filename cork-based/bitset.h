@@ -52,7 +52,9 @@ jx_bitset_clear(struct jx_bitset *set);
 int
 jx_bitset_popcount(struct jx_bitset *set);
 
-/* Extract the byte that contains a particular bit in an array. */
+/* Extract the byte that contains a particular bit in an array.
+ * Bytes are stored in big-endian order with the lowest address
+ * storing the lowest-numbered bits. */
 #define jx_bitset_byte_for_bit(set, i) \
 	((set)->bits[(i) / JX_BITSET_BITS_PER_BYTE])
 
@@ -74,19 +76,19 @@ jx_bitset_popcount(struct jx_bitset *set);
 #define jx_bitset_neg_mask_for_bit(i) \
 	(~jx_bitset_pos_mask_for_bit(i))
 
-/* Return whether a particular bit is set in a byte array.  Bits are numbered
- * from 0, in a big-endian order. */
+/* Return whether a particular bit is set in a byte array.
+ * Bits are numbered from 0 for the least significant bit up to `bit_count`. */
 #define jx_bitset_get(set, i) \
 	((jx_bitset_byte_for_bit(set, i) & jx_bitset_pos_mask_for_bit(i)) != 0)
 
-/* Set (or unset) a particular bit in a byte array.  Bits are numbered
- * from 0, in a big-endian order. */
+/* Set (or unset) a particular bit in a byte array.  
+ * Bits are numbered from 0 for the least significant bit up to `bit_count`. */
 #define jx_bitset_set(set, i, val) \
 	(jx_bitset_byte_for_bit(set, i) = \
 	 (jx_bitset_byte_for_bit(set, i) & jx_bitset_neg_mask_for_bit(i)) \
 	 | ((val)? jx_bitset_pos_mask_for_bit(i): 0))
 
-/* Return the count of bits in the set. */
+/* Return the number of bits for which storage is reserved in the set. */
 #define jx_bitset_get_bit_count(set) \
 	((set)->bit_count)
 
