@@ -215,15 +215,15 @@ jx_bitset_popcount(jx_bitset *set)
 		size_t const *units = (size_t *)set->bits;
 		
 		for (size_t i = 0; i < unit_count; i += 1) {
-			size_t unit = units[i];
-			popcount += jx_bitset_generic_popcount(unit);
+			size_t const *unit_p = &(units[i]);
+			popcount += jx_bitset_generic_popcount(*unit_p);
 		}
 		
 		if (unit_remainder > 0) {
-			uint8_t const *bits_remainder = (uint8_t *)&(units[unit_count]);
+			uint8_t *start_byte_p = (uint8_t *)&(units[unit_count]);
 			for (size_t i = 0; i < unit_remainder; i += 1) {
-				uint8_t byte = bits_remainder[i];
-				popcount += jx_bitset_generic_popcount(byte);
+				uint8_t const *byte_p = &(start_byte_p[i]);
+				popcount += jx_bitset_generic_popcount(*byte_p);
 			}
 		}
 		
