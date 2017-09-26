@@ -52,6 +52,11 @@ test_bitset_with_bit_count(id self, jx_bitset *set) {
 		XCTAssertEqual(jx_bitset_popcount(set), (max_popcount - i - 1),
 					   "Unexpected number of bits set to true for bit count %zu.", bit_count);
 	}
+	
+	jx_bitset_set_all_to_true(set);
+	XCTAssertEqual(jx_bitset_popcount(set), bit_count,
+				   "Unexpected number of bits after setting all to true.");
+
 }
 
 static void

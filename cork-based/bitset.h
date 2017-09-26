@@ -11,6 +11,7 @@
 #define LIBJX_DS_BITS_H
 
 #include <limits.h>
+#include <stdbool.h>
 
 
 /*-----------------------------------------------------------------------
@@ -47,6 +48,14 @@ jx_bitset_free(jx_bitset *set);
 
 void
 jx_bitset_clear(jx_bitset *set);
+
+#if JX_BITSET_INVERT_BIT_ORDER
+void
+jx_bitset_set_all_to_true(jx_bitset *set);
+
+void
+jx_bitset_set_all(jx_bitset *set, bool val);
+#endif
 
 /* Return the number of 1-bits in the set. */
 int

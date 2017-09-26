@@ -109,6 +109,93 @@ jx_bitset_clear(jx_bitset *set)
 	}
 }
 
+#if JX_BITSET_INVERT_BIT_ORDER
+
+#define JX_BITSET_BYTE_WITH_ALL_BITS_SET	~((uint8_t)0)
+#define JX_BITSET_INLINE_STORAGE_WITH_ALL_BITS_SET	~((size_t)0)
+
+/* “One thing to notice about bitmasks like that is that they are always one less than a power of two.”
+ * https://stackoverflow.com/a/1392065/152827 */
+#define jx_bitset_get_mask_for_bits_below_power_of_two(val) \
+	((val) - 1)
+
+size_t
+imaginary_bit_count_pos_mask_for_bit_count(const size_t bit_count)
+{
+	const size_t imaginary_bit_count_pos_mask = jx_bitset_pos_mask_for_bit(bit_count);
+	// As the above is a mask for a single bit, its value is always a power of two.
+	
+	return imaginary_bit_count_pos_mask;
+}
+
+static size_t
+bits_inline_mask_for_bit_count(const size_t bit_count)
+{
+	const size_t imaginary_bit_count_pos_mask = imaginary_bit_count_pos_mask_for_bit_count(bit_count);
+	
+	const size_t imaginary_byte_offset = jx_bitset_byte_offset_in_array(bit_count) % JX_BITSET_INLINE_STORAGE_SIZE;
+	const size_t byte_offset_in_bits = imaginary_byte_offset * JX_BITSET_BITS_PER_BYTE;
+	const size_t imaginary_bit_count_mask = imaginary_bit_count_pos_mask << byte_offset_in_bits;
+	const size_t bits_inline_mask = jx_bitset_get_mask_for_bits_below_power_of_two(imaginary_bit_count_mask);
+	return bits_inline_mask;
+}
+
+static uint8_t
+last_byte_mask_for_bit_count(const size_t bit_count)
+{
+	const size_t imaginary_bit_count_pos_mask = imaginary_bit_count_pos_mask_for_bit_count(bit_count);
+	
+	uint8_t last_byte_mask;
+
+	if (imaginary_bit_count_pos_mask == 1) {
+		last_byte_mask = JX_BITSET_BYTE_WITH_ALL_BITS_SET;
+	}
+	else {
+		last_byte_mask = (uint8_t)(jx_bitset_get_mask_for_bits_below_power_of_two(imaginary_bit_count_pos_mask));
+	}
+	
+	return last_byte_mask;
+}
+
+void
+jx_bitset_set_all_to_true(jx_bitset *set)
+{
+	const size_t bit_count = jx_bitset_get_bit_count(set);
+	
+#if JX_BITSET_USE_INLINE_STORAGE
+	if (jx_bitset_uses_inline_storage(set)) {
+		if (bit_count == JX_BITSET_INLINE_STORAGE_SIZE * JX_BITSET_BITS_PER_BYTE) {
+			set->bits_inline = JX_BITSET_INLINE_STORAGE_WITH_ALL_BITS_SET;
+		}
+		else {
+			const size_t bits_inline_mask = bits_inline_mask_for_bit_count(bit_count);
+			set->bits_inline = bits_inline_mask;
+		}
+	}
+	else
+#endif
+	{
+		const uint8_t all_bits_true = JX_BITSET_BYTE_WITH_ALL_BITS_SET;
+		memset(set->bits, all_bits_true, set->byte_count);
+		
+		const uint8_t last_byte_mask = last_byte_mask_for_bit_count(bit_count);
+		set->bits[set->byte_count - 1] &= last_byte_mask;
+
+	}
+}
+
+void
+jx_bitset_set_all(jx_bitset *set, bool val)
+{
+	if (val) {
+		jx_bitset_set_all_to_true(set);
+	}
+	else {
+		jx_bitset_clear(set);
+	}
+}
+#endif
+
 int
 jx_bitset_popcount(jx_bitset *set)
 {
