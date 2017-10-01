@@ -40,7 +40,7 @@ void
 jx_bitset_init(jx_bitset *set, size_t bit_count);
 
 void
-jx_bitset_deinit(jx_bitset *set);
+jx_bitset_done(jx_bitset *set);
 
 jx_bitset *
 jx_bitset_new(size_t bit_count);

@@ -96,7 +96,7 @@ test_stack_bitset_of_size(id self, size_t bit_count)
 	jx_bitset_clear(&set);
 	test_bitset_with_bit_count_alternating_values(self, &set);
 	
-	jx_bitset_deinit(&set);
+	jx_bitset_done(&set);
 }
 
 static void

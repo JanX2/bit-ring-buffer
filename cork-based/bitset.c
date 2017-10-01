@@ -81,7 +81,7 @@ jx_bitset_new(size_t bit_count)
 }
 
 void
-jx_bitset_deinit(jx_bitset *set)
+jx_bitset_done(jx_bitset *set)
 {
 #if JX_BITSET_USE_INLINE_STORAGE
 	if (!jx_bitset_uses_inline_storage(set))
@@ -94,7 +94,7 @@ jx_bitset_deinit(jx_bitset *set)
 void
 jx_bitset_free(jx_bitset *set)
 {
-	jx_bitset_deinit(set);
+	jx_bitset_done(set);
 	free(set);
 }
 
