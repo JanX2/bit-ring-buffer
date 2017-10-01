@@ -10,6 +10,7 @@
 #include <stdbool.h>
 
 #include "bitset.h"
+#include "bit-ring-buffer.h"
 
 
 @interface bit_ring_buffer_Tests : XCTestCase
@@ -143,6 +144,123 @@ test_bitset_of_size(id self, size_t bit_count)
 	test_bitset_of_size(self, 65535);
 	test_bitset_of_size(self, 65536);
 	test_bitset_of_size(self, 65537);
+}
+
+
+const bool value_1 = false;
+const bool value_2 = true;
+const bool value_3 = false;
+const bool value_4 = true;
+const bool value_5 = false;
+const bool value_6 = true;
+const bool value_7 = false;
+
+void
+test_bit_ring_buffer_fill(id self, jx_bit_ring_buffer *buf)
+{
+	XCTAssertEqual(jx_bit_ring_buffer_add(buf, value_1), true,
+				   "Cannot add to ring buffer.");
+	XCTAssertEqual(jx_bit_ring_buffer_add(buf, value_2), true,
+				   "Cannot add to ring buffer.");
+	XCTAssertEqual(jx_bit_ring_buffer_add(buf, value_3), true,
+				   "Cannot add to ring buffer.");
+	XCTAssertEqual(jx_bit_ring_buffer_add(buf, value_4), true,
+				   "Cannot add to ring buffer.");
+	
+	XCTAssertEqual(jx_bit_ring_buffer_is_full(buf), true,
+				   "Ring buffer should be full.");
+}
+
+static void
+test_bit_ring_buffer_core(id self, jx_bit_ring_buffer *buf)
+{
+	XCTAssertEqual(jx_bit_ring_buffer_get_allocated_size(buf), 4,
+				   "Ring buffer should provide storage for the right number of elements.");
+	
+	XCTAssertEqual(jx_bit_ring_buffer_is_empty(buf), true,
+				   "Ring buffer should be empty.");
+	
+	test_bit_ring_buffer_fill(self, buf);
+	
+	XCTAssertNotEqual(jx_bit_ring_buffer_add(buf, value_5), true,
+					  "Shouldn't be able to add to a full ring buffer.");
+	
+	XCTAssertEqual(*jx_bit_ring_buffer_peek(buf), value_1,
+				   "Unexpected head of ring buffer (peek).");
+	XCTAssertEqual(*jx_bit_ring_buffer_pop(buf), value_1,
+				   "Unexpected head of ring buffer (pop).");
+	XCTAssertEqual(*jx_bit_ring_buffer_pop(buf), value_2,
+				   "Unexpected head of ring buffer (pop).");
+	
+	XCTAssertEqual(jx_bit_ring_buffer_add(buf, value_5), true,
+				   "Cannot add to ring buffer.");
+	XCTAssertEqual(jx_bit_ring_buffer_add(buf, value_6), true,
+				   "Cannot add to ring buffer.");
+	XCTAssertNotEqual(jx_bit_ring_buffer_add(buf, value_7), true,
+					  "Shouldn't be able to add to ring buffer.");
+	
+	XCTAssertEqual(*jx_bit_ring_buffer_pop(buf), value_3,
+				   "Unexpected head of ring buffer (pop).");
+	XCTAssertEqual(*jx_bit_ring_buffer_pop(buf), value_4,
+				   "Unexpected head of ring buffer (pop).");
+	XCTAssertEqual(*jx_bit_ring_buffer_pop(buf), value_5,
+				   "Unexpected head of ring buffer (pop).");
+	XCTAssertEqual(*jx_bit_ring_buffer_pop(buf), value_6,
+				   "Unexpected head of ring buffer (pop).");
+	XCTAssertEqual(jx_bit_ring_buffer_pop(buf), NULL,
+				   "Shouldn't be able to pop from an empty ring buffer.");
+	
+	XCTAssertEqual(jx_bit_ring_buffer_is_empty(buf), true,
+				   "Ring buffer should be empty.");
+	
+	test_bit_ring_buffer_fill(self, buf);
+	
+	XCTAssertNotEqual(jx_bit_ring_buffer_add(buf, value_2), true,
+					  "Shouldn't be able to add to a full ring buffer.");
+	
+	XCTAssertEqual(jx_bit_ring_buffer_population_count(buf), 2,
+				   "Unexpected head of ring buffer (peek).");
+
+	jx_bit_ring_buffer_add_with_overwrite(buf, value_2);
+	XCTAssertEqual(*jx_bit_ring_buffer_peek(buf), value_2,
+				   "Unexpected head of ring buffer (peek).");
+
+	XCTAssertEqual(jx_bit_ring_buffer_population_count(buf), 3,
+				   "Unexpected head of ring buffer (peek).");
+}
+
+static void
+test_stack_bit_ring_buffer(id self)
+{
+	struct jx_bit_ring_buffer buf;
+	jx_bit_ring_buffer_init(&buf, 4);
+	
+	test_bit_ring_buffer_core(self, &buf);
+	
+	jx_bit_ring_buffer_done(&buf);
+
+}
+
+static void
+test_heap_bit_ring_buffer(id self)
+{
+	struct jx_bit_ring_buffer *buf = jx_bit_ring_buffer_new(4);
+	
+	test_bit_ring_buffer_core(self, buf);
+	
+	jx_bit_ring_buffer_free(buf);
+}
+
+static void
+test_bit_ring_buffer(id self)
+{
+	test_stack_bit_ring_buffer(self);
+	test_heap_bit_ring_buffer(self);
+}
+
+- (void)testBitRingBuffer
+{
+	test_bit_ring_buffer(self);
 }
 
 #if 0

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3DC3D23E1F815BC200743D9F /* bit-ring-buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DC3D23C1F815BC200743D9F /* bit-ring-buffer.c */; };
+		3DC3D23F1F81755000743D9F /* bit-ring-buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DC3D23C1F815BC200743D9F /* bit-ring-buffer.c */; };
 		3DD6F4261F77ABD400B55CF6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DD6F4251F77ABD400B55CF6 /* main.m */; };
 		3DD6F4331F77AC0200B55CF6 /* bit_ring_buffer_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DD6F4321F77AC0200B55CF6 /* bit_ring_buffer_Tests.m */; };
 		3DD6F43F1F77ACF600B55CF6 /* bitset.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DD6F4391F77ACF600B55CF6 /* bitset.c */; };
@@ -26,6 +28,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3DC3D23C1F815BC200743D9F /* bit-ring-buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "bit-ring-buffer.c"; sourceTree = "<group>"; };
+		3DC3D23D1F815BC200743D9F /* bit-ring-buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "bit-ring-buffer.h"; sourceTree = "<group>"; };
 		3DD6F4221F77ABD400B55CF6 /* bit-ring-buffer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "bit-ring-buffer"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DD6F4251F77ABD400B55CF6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3DD6F4301F77AC0200B55CF6 /* bit-ring-buffer-Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "bit-ring-buffer-Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +99,8 @@
 			children = (
 				3DD6F43A1F77ACF600B55CF6 /* bitset.h */,
 				3DD6F4391F77ACF600B55CF6 /* bitset.c */,
+				3DC3D23D1F815BC200743D9F /* bit-ring-buffer.h */,
+				3DC3D23C1F815BC200743D9F /* bit-ring-buffer.c */,
 			);
 			path = "cork-based";
 			sourceTree = "<group>";
@@ -186,6 +192,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DC3D23E1F815BC200743D9F /* bit-ring-buffer.c in Sources */,
 				3DD6F43F1F77ACF600B55CF6 /* bitset.c in Sources */,
 				3DD6F4261F77ABD400B55CF6 /* main.m in Sources */,
 			);
@@ -196,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DD6F4401F77ACF600B55CF6 /* bitset.c in Sources */,
+				3DC3D23F1F81755000743D9F /* bit-ring-buffer.c in Sources */,
 				3DD6F4331F77AC0200B55CF6 /* bit_ring_buffer_Tests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
