@@ -310,7 +310,7 @@ jx_bitset_shift_all_bits_forward_slowest(jx_bitset *set)
 	}
 }
 
-int
+size_t
 jx_bitset_popcount(jx_bitset *set)
 {
 #if JX_BITSET_USE_INLINE_STORAGE
@@ -325,7 +325,7 @@ jx_bitset_popcount(jx_bitset *set)
 		const size_t unit_count = set->byte_count / unit_size;
 		const size_t unit_remainder = set->byte_count % unit_size;
 		
-		int popcount = 0;
+		size_t popcount = 0;
 		size_t const *units = (size_t *)set->bits;
 		
 		for (size_t i = 0; i < unit_count; i += 1) {

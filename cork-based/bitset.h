@@ -69,7 +69,7 @@ void
 jx_bitset_shift_all_bits_forward_slowest(jx_bitset *set);
 
 /* Return the number of 1-bits in the set. */
-int
+size_t
 jx_bitset_popcount(jx_bitset *set);
 
 /* Calculate the offset of the byte for a particular bit within the byte array. */
